@@ -1,0 +1,44 @@
+# Cargo.toml
+
+[package]
+name = "aoc2024"
+version = "1.8.0"
+authors = ["Sami J. Mäkinen <sjm@iki.fi>"]
+description = "Advent of Code 2024"
+repository = "https://github.com/sjm42/aoc2024"
+readme = "README.md"
+keywords = ["AOC"]
+license = "MIT"
+edition = "2021"
+resolver = "2"
+
+
+[dependencies]
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+chrono = "0"
+colored = "2"
+itertools = "0"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+shellexpand = { version = "3", features = ["full"] }
+tracing = { version = "0", features = ["log"] }
+tracing-subscriber = "0"
+
+[build-dependencies]
+build-data = "0"
+
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+
+
+[profile.minsize]
+inherits = "release"
+codegen-units = 1
+strip = true
+opt-level = "z"
+panic = "abort"
+
+# EOF
