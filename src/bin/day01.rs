@@ -1,10 +1,7 @@
 // bin/day01.rs
 
-use std::collections::HashMap;
-use std::io::{self, BufRead};
-
-use anyhow::anyhow;
 use itertools::Itertools;
+use std::collections::HashMap;
 
 use aoc2024::*;
 

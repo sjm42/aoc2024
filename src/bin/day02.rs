@@ -1,7 +1,5 @@
 // bin/day02.rs
 
-use std::io::{self, BufRead};
-
 use aoc2024::*;
 
 fn main() -> anyhow::Result<()> {
