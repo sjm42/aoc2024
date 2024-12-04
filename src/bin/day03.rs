@@ -36,7 +36,7 @@ fn main() -> anyhow::Result<()> {
                 continue;
             }
 
-            if &op[1] == "mul" && op[2].len() > 0 {
+            if &op[1] == "mul" && !op[2].is_empty() {
                 if let Some(cap) = mul_re.captures(&op[2]) {
                     let x = cap[1].to_string().parse::<i64>().unwrap_or(0);
                     let y = cap[2].to_string().parse::<i64>().unwrap_or(0);
