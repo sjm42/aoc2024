@@ -56,7 +56,7 @@ fn main() -> anyhow::Result<()> {
     debug!("Map after walk1:");
     print_map(&map_walk1);
 
-    let n_block = block_guard(&map, start, direction);
+    let n_block = block_guard(&map_walk1, start, direction);
     println!("Found blocking options: {n_block}");
 
     Ok(())
@@ -106,7 +106,7 @@ fn block_guard(map: &[Vec<char>], start: (i32, i32), direction: (i32, i32)) -> u
     let mut n_inf = 0;
     for y in 0..size_y {
         for x in 0..size_x {
-            if map[y as usize][x as usize] != '.' {
+            if map[y as usize][x as usize] != 'X' {
                 continue;
             }
             let mut try_map = clone_map(map);
