@@ -2,7 +2,7 @@
 
 [package]
 name = "aoc2024"
-version = "1.8.0"
+version = "1.8.2"
 authors = ["Sami J. Mäkinen <sjm@iki.fi>"]
 description = "Advent of Code 2024"
 repository = "https://github.com/sjm42/aoc2024"
