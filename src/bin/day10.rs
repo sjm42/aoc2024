@@ -38,11 +38,19 @@ fn main() -> anyhow::Result<()> {
 
     let mut total1 = 0;
     for (i, &t) in trailheads.iter().enumerate() {
-        let score = trailhead_score(&mut map, t, i + 1);
+        let score = trailhead_score(&mut map, t, i + 1, false);
         debug!("Trailhead #{i} {t:?} score: {score}");
         total1 += score;
     }
-    println!("Total1: {}", total1);
+    println!("Total1: {total1}");
+
+    let mut total2 = 0;
+    for (i, &t) in trailheads.iter().enumerate() {
+        let rating = trailhead_score(&mut map, t, i + 1, true);
+        debug!("Trailhead #{i} {t:?} rating: {rating}");
+        total2 += rating;
+    }
+    println!("Total2: {total2}");
 
     Ok(())
 }
@@ -71,7 +79,12 @@ fn map_visited(map: &[Vec<(u8, usize)>], trail: usize) {
     }
 }
 
-fn trailhead_score(map: &mut [Vec<(u8, usize)>], loc: (i32, i32), trail_id: usize) -> u64 {
+fn trailhead_score(
+    map: &mut [Vec<(u8, usize)>],
+    loc: (i32, i32),
+    trail_id: usize,
+    rating: bool,
+) -> u64 {
     if !on_map(map, loc) {
         return 0;
     }
@@ -92,8 +105,8 @@ fn trailhead_score(map: &mut [Vec<(u8, usize)>], loc: (i32, i32), trail_id: usiz
             continue;
         }
         let point = map[testloc.1 as usize][testloc.0 as usize];
-        if point.0 == next_val && point.1 != trail_id {
-            score += trailhead_score(map, testloc, trail_id);
+        if point.0 == next_val && (rating || point.1 != trail_id) {
+            score += trailhead_score(map, testloc, trail_id, rating);
         }
     }
     score
