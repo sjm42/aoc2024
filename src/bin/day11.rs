@@ -25,19 +25,19 @@ fn main() -> anyhow::Result<()> {
     let c1 = stones
         .iter()
         .map(|&i| count_stones(&mut cache, i, 6, &mut max_len))
-        .sum::<u64>();
+        .sum::<u128>();
     println!("After 6 iterations, got {c1} stones");
 
     let c2 = stones
         .iter()
         .map(|&i| count_stones(&mut cache, i, 25, &mut max_len))
-        .sum::<u64>();
+        .sum::<u128>();
     println!("After 25 iterations, got {c2} stones");
 
     let c3 = stones
         .iter()
         .map(|&i| count_stones(&mut cache, i, 75, &mut max_len))
-        .sum::<u64>();
+        .sum::<u128>();
     println!("After 75 iterations, got {c3} stones");
 
     info!("Label max len: {max_len}");
@@ -47,11 +47,11 @@ fn main() -> anyhow::Result<()> {
 
 #[allow(dead_code)]
 fn count_stones(
-    cache: &mut HashMap<(u128, usize), u64>,
+    cache: &mut HashMap<(u128, usize), u128>,
     stone: u128,
     mut n: usize,
     max_len: &mut usize,
-) -> u64 {
+) -> u128 {
     if n == 0 {
         return 1;
     }
