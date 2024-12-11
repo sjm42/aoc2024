@@ -11,7 +11,6 @@ fn main() -> anyhow::Result<()> {
     let mut n_safe2: u64 = 0;
     for line in io::stdin().lock().lines() {
         let line = line?;
-        let line = line.trim();
 
         let reports = line
             .split_whitespace()
