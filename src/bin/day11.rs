@@ -39,12 +39,9 @@ fn count_stones(stone: &BigUint, mut n: usize) -> u64 {
         return 1;
     }
     n -= 1;
-
     if stone.is_zero() {
         return count_stones(&BigUint::from(1u8), n);
     }
-
-
 
     let s = stone.to_string();
     let len = s.len();
