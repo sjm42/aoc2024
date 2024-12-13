@@ -4,7 +4,7 @@ use std::cmp;
 
 use aoc2024::*;
 
-const MAX_BUTTON: u64 = 100;
+const MAX_BUTTON: i64 = 100;
 
 enum DataState {
     ButtonA,
@@ -67,23 +67,29 @@ fn main() -> anyhow::Result<()> {
     }
     debug!("Tasks: {:?}", tasks);
 
-    let cost: u64 = tasks
+    let cost: i64 = tasks
         .iter()
-        .filter_map(|t| find_ab((t.0, t.1), (t.2, t.3), (t.4, t.5)))
+        .filter_map(|t| find_ab_stupid((t.0, t.1), (t.2, t.3), (t.4, t.5)))
         .map(|(a, b)| a * 3 + b)
         .sum();
-    println!("Part 1 cost: {cost}");
+    println!("Part 1 (stupid) cost: {cost}");
+
+    let cost1 = tasks
+        .iter()
+        .map(|t| solve_ab((t.0, t.1), (t.2, t.3), (t.4, t.5), 0))
+        .sum::<i64>();
+    println!("Part 1 (solve) cost: {cost1}");
 
     Ok(())
 }
 
-fn get_nums(re: &regex::Regex, input: &str, line_num: usize) -> anyhow::Result<(u64, u64)> {
+fn get_nums(re: &regex::Regex, input: &str, line_num: usize) -> anyhow::Result<(i64, i64)> {
     if let Some(caps) = re.captures(input) {
         let nums = caps
             .iter()
             .skip(1)
             .filter(|c| c.is_some())
-            .map(|s| s.unwrap().as_str().parse::<u64>().unwrap_or_default())
+            .map(|s| s.unwrap().as_str().parse::<i64>().unwrap_or_default())
             .collect::<Vec<_>>();
         // debug!("Found {nums:?}");
         if nums.len() == 2 {
@@ -93,7 +99,7 @@ fn get_nums(re: &regex::Regex, input: &str, line_num: usize) -> anyhow::Result<(
     Err(anyhow!("Invalid input on line #{line_num}: \"{input}\""))
 }
 
-fn find_ab(a: (u64, u64), b: (u64, u64), p: (u64, u64)) -> Option<(u64, u64)> {
+fn find_ab_stupid(a: (i64, i64), b: (i64, i64), p: (i64, i64)) -> Option<(i64, i64)> {
     info!("*** Trying to solve {p:?} from A{a:?} + B{b:?}");
     for n_b in (0..cmp::min(MAX_BUTTON, p.0 / b.0)).rev() {
         let rem_x = p.0 - n_b * b.0;
@@ -116,4 +122,17 @@ fn find_ab(a: (u64, u64), b: (u64, u64), p: (u64, u64)) -> Option<(u64, u64)> {
     }
     None
 }
+
+fn solve_ab(a: (i64, i64), b: (i64, i64), p: (i64, i64), offset: i64) -> i64 {
+    let prize = (p.0 + offset, p.1 + offset);
+    let det = a.0 * b.1 - a.1 * b.0;
+    let n_a = (prize.0 * b.1 - prize.1 * b.0) / det;
+    let n_b = (a.0 * prize.1 - a.1 * prize.0) / det;
+    if (a.0 * n_a + b.0 * n_b, a.1 * n_a + b.1 * n_b) == (prize.0, prize.1) {
+        n_a * 3 + n_b
+    } else {
+        0
+    }
+}
+
 // EOF
