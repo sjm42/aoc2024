@@ -5,6 +5,7 @@ use std::cmp;
 use aoc2024::*;
 
 const MAX_BUTTON: i64 = 100;
+const PART2_OFFSET: i64 = 10000000000000;
 
 enum DataState {
     ButtonA,
@@ -80,6 +81,11 @@ fn main() -> anyhow::Result<()> {
         .sum::<i64>();
     println!("Part 1 (solve) cost: {cost1}");
 
+    let cost2 = tasks.iter()
+        .map(|t| solve_ab((t.0, t.1), (t.2, t.3), (t.4, t.5), PART2_OFFSET))
+        .sum::<i64>();
+    println!("Part 2 (solve) cost: {cost2}");
+
     Ok(())
 }
 
@@ -123,6 +129,8 @@ fn find_ab_stupid(a: (i64, i64), b: (i64, i64), p: (i64, i64)) -> Option<(i64, i
     None
 }
 
+
+// stolen from https://www.reddit.com/r/adventofcode/comments/1hd7irq/2024_day_13_an_explanation_of_the_mathematics/
 fn solve_ab(a: (i64, i64), b: (i64, i64), p: (i64, i64), offset: i64) -> i64 {
     let prize = (p.0 + offset, p.1 + offset);
     let det = a.0 * b.1 - a.1 * b.0;
@@ -134,5 +142,4 @@ fn solve_ab(a: (i64, i64), b: (i64, i64), p: (i64, i64), offset: i64) -> i64 {
         0
     }
 }
-
 // EOF
