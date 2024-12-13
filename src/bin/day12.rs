@@ -1,5 +1,7 @@
 // bin/day12.rs
 
+// implements only part 1
+
 use aoc2024::*;
 
 #[derive(Copy, Clone, Debug)]
