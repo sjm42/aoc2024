@@ -123,9 +123,9 @@ impl std::fmt::Display for Map {
             for x in 0..self.size_x as usize {
                 let v = self.map[y][x] % 10;
                 if v == 0 {
-                    write!(f, ". ")?;
+                    write!(f, ".")?;
                 } else {
-                    write!(f, "{v} ")?;
+                    write!(f, "{v}")?;
                 }
             }
             writeln!(f)?;
@@ -179,14 +179,30 @@ fn main() -> anyhow::Result<()> {
         }
     }
 
+    let mut robots_part1 = robots.clone();
     for _ in 0..STEPS {
-        for r in robots.iter_mut() {
+        for r in robots_part1.iter_mut() {
             r.step();
         }
     }
-    let map = Map::new(SIZE_X, SIZE_Y).with_robots(&robots);
+    let map = Map::new(SIZE_X, SIZE_Y).with_robots(&robots_part1);
     debug!("Robots after {STEPS} steps:\n{map}");
     println!("Safety factor: {}", map.safety_factor());
+
+    info!("Now trying to find xmas tree...");
+    let mut robots_part2 = robots.clone();
+    let mut i = 0;
+    loop {
+        let map = Map::new(SIZE_X, SIZE_Y).with_robots(&robots_part2);
+        if !map.map.iter().any(|r| r.iter().any(|&v| v > 1)) {
+            debug!("\n{map}\n^ Robots after {i} steps");
+            break;
+        }
+        for r in robots_part2.iter_mut() {
+            r.step();
+        }
+        i += 1;
+    }
 
     Ok(())
 }
