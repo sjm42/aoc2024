@@ -92,10 +92,6 @@ impl Map {
 
     fn safety_factor(&self) -> i64 {
         let (szx, szy) = (self.size_x as usize, self.size_y as usize);
-        if self.size_x % 2 == 0 || self.size_y % 2 == 0 {
-            // we only deal with odd sizes here, sorry
-            return 0;
-        }
         let (xhalf, yhalf) = (szx / 2, szy / 2);
         let q1 = self.map[0..yhalf]
             .iter()
